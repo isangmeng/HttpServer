@@ -1,4 +1,6 @@
-
+/**
+ * 通用链表
+ */
 #ifndef _LINK_TAB_H_
 #define _LINK_TAB_H_
 

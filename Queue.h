@@ -1,3 +1,7 @@
+/**
+ * 通用队列
+ * @return [description]
+ */
 
 #ifndef _Queue_H_
 #define _Queue_H_

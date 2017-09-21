@@ -1,3 +1,7 @@
+/**
+ * 线程池
+ */
+
 #ifndef _PTHREADPOOL_H_
 #define _PTHREADPOOL_H_
 #include <pthread.h>

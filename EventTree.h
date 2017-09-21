@@ -1,4 +1,6 @@
-
+/**
+ * 事件树
+ */
 #ifndef _EVENT_TREE_H_
 #define _EVENT_TREE_H_
 

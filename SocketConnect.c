@@ -1,7 +1,5 @@
 #include "SocketConnect.h"
-// #include "EventTree.h"
 #include "global.h"
-// #include "Http.h"
 #include <unistd.h>
 #include <sys/fcntl.h>
 /**

@@ -1,4 +1,6 @@
-
+/**
+ * 服务端socket初始化
+ */
 #ifndef _SOCKET_CONNECT_H_
 #define _SOCKET_CONNECT_H_
 
@@ -28,9 +30,4 @@ SocketConnect* InitSocket(uint16_t port);
 void CloseSocket(SocketConnect* server);
 
 
-// void AcceptConnect(void* arg);
-
-// void* sendinfo(void* arg);
-
-void DealHttp(void* arg);
 #endif
