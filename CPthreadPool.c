@@ -41,7 +41,7 @@ PthreadPool* CreatePthreadPool()
  */
 int AddTask(PthreadPool* pool, void* task)
 {
-    printf("%d,%d,%f\n",pool->ActiveNum,pool->Pool->sum, (double)pool->ActiveNum/pool->Pool->sum);
+    // printf("%d,%d,%f\n",pool->ActiveNum,pool->Pool->sum, (double)pool->ActiveNum/pool->Pool->sum);
     pthread_mutex_lock(&pool->LockTask);
     Push(pool->TaskQueue, task);
     pthread_mutex_unlock(&pool->LockTask);

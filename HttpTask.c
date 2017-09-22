@@ -2,30 +2,37 @@
 #include "EventTree.h"
 #include <malloc.h>
 #include <unistd.h>
+#include<sys/socket.h>
 
 HttpTask* CreateHttpTask(int fd)
 {
+
     HttpTask* task = malloc(sizeof(HttpTask));
     task->arg = task;
+    task->isLive = 1;
     task->clientFd = fd;
     task->CallHandel = Handle;
     task->DestroyTask = DestroyHandle;
+    pthread_mutex_init(&task->lockIsLive, NULL);
     return task;
 }
 
 void* Handle(void* arg)
 {
     HttpTask* task = (HttpTask*)arg;
-    char buf[1024];
-    int n = read(task->clientFd, buf, sizeof(buf));
-    if(n >= 0)
+    char* buf = (char*)malloc(sizeof(char)*1024);
+    int n = read(task->clientFd, buf, 1024);
+    if(n > 0)
     {
         buf[n] = '\0';
         printf("%s\n", buf);
     }else{
-        task->DestroyTask(task);
+        pthread_mutex_lock(&task->lockIsLive);
+        task->isLive = 0;
+        pthread_mutex_unlock(&task->lockIsLive);
     }
-        // DeleteEvent(eventTree, )
+    free(buf);
+    // task->DestroyTask(task->arg);
 
     // write(STDOUT_FILENO, buf, strlen(buf));
     return NULL;
@@ -34,8 +41,8 @@ void* Handle(void* arg)
 void* DestroyHandle(void* arg)
 {
     HttpTask* task = (HttpTask*)arg;
-    close(task->clientFd);
-    
+    // close(task->clientFd);
+    shutdown(task->clientFd,SHUT_RDWR);
     free(task);
     return NULL;
 }

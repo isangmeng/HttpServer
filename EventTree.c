@@ -58,13 +58,14 @@ EventNode* CreateEventNode(int fd, int event, void* task)
  */
 void AddEvent(EventTree* eventTree, EventNode* newNode)
 {
-    struct epoll_event new;
-    new.events = newNode->event;
-    new.data.ptr = newNode;
+    struct epoll_event* new = (struct epoll_event*)malloc(sizeof(struct epoll_event));
+    new->events = newNode->event;
+    new->data.ptr = newNode;
     pthread_mutex_lock(&(eventTree->TreeLock));
-    epoll_ctl(eventTree->Root, EPOLL_CTL_ADD, newNode->fd, &new);
+    epoll_ctl(eventTree->Root, EPOLL_CTL_ADD, newNode->fd, new);
     eventTree->HasNum++;
     pthread_mutex_unlock(&eventTree->TreeLock);
+    free(new);
 }
 
 /**
@@ -74,12 +75,13 @@ void AddEvent(EventTree* eventTree, EventNode* newNode)
  */
 void DeleteEvent(EventTree* eventTree, EventNode* deleteNode)
 {
-
+    printf("删除事件");
     pthread_mutex_lock(&(eventTree->TreeLock));
-    close(deleteNode->fd);
     epoll_ctl(eventTree->Root, EPOLL_CTL_DEL, deleteNode->fd, NULL);
+    close(deleteNode->fd);
     eventTree->HasNum--;
     pthread_mutex_unlock(&eventTree->TreeLock);
+    free(deleteNode);
 }
 
 /**
@@ -97,8 +99,18 @@ void WaitEvent(EventTree* eventTree)
         {
             EventNode* activeNode = (EventNode*)(eventTree->ActiveEvent[i].data.ptr);
             // activeNode->CallHandel(activeNode->arg);
-            // AddTask(pthreadPool, activeNode->task);
-            activeNode->task->CallHandel(activeNode->task->arg);
+
+            AddTask(pool, activeNode->task);
+            // activeNode->task->CallHandel(activeNode->task->arg);
+
+            pthread_mutex_lock(&activeNode->task->lockIsLive);
+            printf("活动事件活%d\n", activeNode->task->isLive);
+            if(activeNode->task->isLive == 0)
+            {
+                activeNode->task->DestroyTask(activeNode->task->arg);
+                DeleteEvent(eventTree,activeNode);
+            }
+            pthread_mutex_unlock(&activeNode->task->lockIsLive);
             // DeleteEvent(eventTree, activeNode);
         }
         // nready = 0;

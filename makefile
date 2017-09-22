@@ -6,3 +6,5 @@ testGdb:
 	gcc -o testGdb test.c CPthreadPool.c linkTab.c Queue.c -pthread -g
 server:
 	gcc -o server *c -pthread
+serverGdb:
+	gcc -o serverGdb *c -pthread
