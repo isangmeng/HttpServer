@@ -99,7 +99,7 @@ void WaitEvent(EventTree* eventTree)
             // activeNode->CallHandel(activeNode->arg);
             // AddTask(pthreadPool, activeNode->task);
             activeNode->task->CallHandel(activeNode->task->arg);
-            DeleteEvent(eventTree, activeNode);
+            // DeleteEvent(eventTree, activeNode);
         }
         // nready = 0;
     }
