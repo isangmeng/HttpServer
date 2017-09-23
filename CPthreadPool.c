@@ -117,7 +117,7 @@ void* ManageTaskHandel(void* arg)
     PthreadPool* pool = (PthreadPool*)arg;
     while(1)
     {
-        // printf("manage---\n");
+        printf("manage---%d--%d\n",pool->ActiveNum, GetSumPthread(pool));
         if(GetSumPthread(pool) && ((double)pool->ActiveNum)/GetSumPthread(pool) > pool->MaxActiveRate)
             AddPthread(pool, 0);
         if(GetSumPthread(pool) && ((double)pool->ActiveNum)/GetSumPthread(pool) < pool->MinActiveRate)

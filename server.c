@@ -7,11 +7,11 @@ int main()
     //穿创建线程池
     pool = CreatePthreadPool();
     //初始化事树
-    eventTree = InitEventTree(100);
+    eventTree = InitEventTree(500);
     //创建接受请求任务
     AcceptConnectTask* acceptTask = CreatAcceptConnectTask(server);
     //创建新事件
-    EventNode* node = CreateEventNode(acceptTask->ServerFd, EPOLLIN, acceptTask);
+    EventNode* node = CreateEventNode(acceptTask->ServerFd, EPOLLIN|EPOLLET, acceptTask);
     //添加监听事件到监听树
     AddEvent(eventTree, node);
 

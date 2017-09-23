@@ -26,11 +26,13 @@ void* Handle(void* arg)
     {
         buf[n] = '\0';
         printf("%s\n", buf);
+        write(task->clientFd, buf, sizeof(buf));
     }else{
         pthread_mutex_lock(&task->lockIsLive);
         task->isLive = 0;
         pthread_mutex_unlock(&task->lockIsLive);
     }
+    // task->isLive = 0;
     free(buf);
     // task->DestroyTask(task->arg);
 

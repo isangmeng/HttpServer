@@ -33,7 +33,7 @@ void* AcceptHandle(void* arg)
     if(con > 0)
     {
         HttpTask* task = CreateHttpTask(con);
-        EventNode* node = CreateEventNode(con, EPOLLIN, task);
+        EventNode* node = CreateEventNode(con, EPOLLIN|EPOLLET, task);
         AddEvent(eventTree, node);
     }
     if(con < 0)

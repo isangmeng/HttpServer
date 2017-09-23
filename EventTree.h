@@ -24,6 +24,7 @@ typedef struct EventTree{
     pthread_mutex_t TreeLock;           //树的锁
     int Root;                           //树根
     struct epoll_event* ActiveEvent;    //活动的事件
+    pthread_mutex_t ActiveEventLock;    //活动事件锁
     unsigned int ActiveEventNum;        //活动事件数组大小
     unsigned int HasNum;                //当前的节点数
 }EventTree;

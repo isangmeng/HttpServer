@@ -15,6 +15,7 @@ EventTree* InitEventTree(unsigned int ActiveEventNum)
         printf("malloc eventTree error:\n");
         exit(1);
     }
+    pthread_mutex_init(&eventTree->ActiveEventLock, NULL);
     eventTree->Root = epoll_create(10);
     eventTree->ActiveEventNum = ActiveEventNum;
     eventTree->HasNum = 0;
@@ -92,11 +93,13 @@ void WaitEvent(EventTree* eventTree)
 {
     while(1)
     {
+        pthread_mutex_lock(&eventTree->ActiveEventLock);
         int nready = epoll_wait(eventTree->Root, eventTree->ActiveEvent, eventTree->ActiveEventNum, -1);
         if(DEBUG)
             printf("所有事件:%d,活动事件%d\n", eventTree->HasNum,nready);
         for(int i=0; i<nready; i++)
         {
+            printf("处理事件\n");
             EventNode* activeNode = (EventNode*)(eventTree->ActiveEvent[i].data.ptr);
             // activeNode->CallHandel(activeNode->arg);
 
@@ -113,6 +116,8 @@ void WaitEvent(EventTree* eventTree)
             pthread_mutex_unlock(&activeNode->task->lockIsLive);
             // DeleteEvent(eventTree, activeNode);
         }
-        // nready = 0;
+        nready = 0;
+        pthread_mutex_unlock(&eventTree->ActiveEventLock);
+
     }
 }
