@@ -16,8 +16,8 @@ EventTree* InitEventTree(unsigned int ActiveEventNum)
         exit(1);
     }
     pthread_mutex_init(&eventTree->ActiveEventLock, NULL);
-    eventTree->Root = epoll_create(10);
-    eventTree->ActiveEventNum = ActiveEventNum;
+    eventTree->Root = epoll_create(ActiveEventNum);
+    eventTree->ActiveEventNum = ActiveEventNum-1;
     eventTree->HasNum = 0;
     eventTree->ActiveEvent = (struct epoll_event*)malloc(sizeof(struct epoll_event) * eventTree->ActiveEventNum);
     if(eventTree->ActiveEvent == NULL)
@@ -81,6 +81,7 @@ void DeleteEvent(EventTree* eventTree, EventNode* deleteNode)
     epoll_ctl(eventTree->Root, EPOLL_CTL_DEL, deleteNode->fd, NULL);
     close(deleteNode->fd);
     eventTree->HasNum--;
+    deleteNode->task->DestroyTask(deleteNode->task->arg);
     pthread_mutex_unlock(&eventTree->TreeLock);
     free(deleteNode);
 }
@@ -110,7 +111,8 @@ void WaitEvent(EventTree* eventTree)
             printf("活动事件活%d\n", activeNode->task->isLive);
             if(activeNode->task->isLive == 0)
             {
-                activeNode->task->DestroyTask(activeNode->task->arg);
+                printf("删除任务，删除事件\n");
+                // activeNode->task->DestroyTask(activeNode->task->arg);
                 DeleteEvent(eventTree,activeNode);
             }
             pthread_mutex_unlock(&activeNode->task->lockIsLive);

@@ -28,6 +28,7 @@ PthreadPool* CreatePthreadPool()
     Task* manage = (Task*)malloc(sizeof(Task));
     manage->CallHandel = ManageTaskHandel;
     manage->arg = pool;
+    manage->isLive = 1;
     AddTask(pool, manage);
 
     return pool;
@@ -117,7 +118,7 @@ void* ManageTaskHandel(void* arg)
     PthreadPool* pool = (PthreadPool*)arg;
     while(1)
     {
-        printf("manage---%d--%d\n",pool->ActiveNum, GetSumPthread(pool));
+        // printf("manage---%d--%d\n",pool->ActiveNum, GetSumPthread(pool));
         if(GetSumPthread(pool) && ((double)pool->ActiveNum)/GetSumPthread(pool) > pool->MaxActiveRate)
             AddPthread(pool, 0);
         if(GetSumPthread(pool) && ((double)pool->ActiveNum)/GetSumPthread(pool) < pool->MinActiveRate)
@@ -198,6 +199,7 @@ void* Handel(void* arg)
         if(task)
         {
             task->CallHandel(task->arg);
+
             // printf("运行任务\n");
         }
         //是否需要退出
