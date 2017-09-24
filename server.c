@@ -14,7 +14,6 @@ int main()
     EventNode* node = CreateEventNode(acceptTask->ServerFd, EPOLLIN|EPOLLET, acceptTask);
     //添加监听事件到监听树
     AddEvent(eventTree, node);
-
     //监听事件发生
     WaitEvent(eventTree);
     return 0;
