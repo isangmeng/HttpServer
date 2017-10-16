@@ -15,9 +15,9 @@ typedef struct CTask{
 void* TaskHandle(void* arg)
 {
     CTask* myself = (CTask*)arg;
-    // sleep(5);
-    while(1)
-    ;
+    sleep(5);
+    // while(1)
+    // ;
     printf("%d\n", myself->n);
     return NULL;
 }

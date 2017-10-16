@@ -34,7 +34,7 @@ void* AcceptHandle(void* arg)
     if(con > 0)
     {
         HttpTask* task = CreateHttpTask(con);
-        EventNode* node = CreateEventNode(con, EPOLLIN|EPOLLET, task);
+        EventNode* node = CreateEventNode(con, EPOLLIN|EPOLLET|EPOLLONESHOT, task);
         AddEvent(eventTree, node);
     }
     if(con < 0)
@@ -49,6 +49,6 @@ void* AcceptHandle(void* arg)
     // eventTree->HasNum++;
     // pthread_mutex_unlock(&eventTree->TreeLock);
     // free(new);
-    AddEvent(eventTree, CreateEventNode(AcceptTask->ServerFd, EPOLLIN|EPOLLET, AcceptTask));
+    // AddEvent(eventTree, CreateEventNode(AcceptTask->ServerFd, EPOLLIN|EPOLLET, AcceptTask));
     return NULL;
 }

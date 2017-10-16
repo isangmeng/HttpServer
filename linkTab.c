@@ -178,3 +178,25 @@ void ShowLinkTab(plinkTab linkTab)
 		p = p->next;
 	}
 }
+
+
+
+/**
+ * 对每个节点执行函数
+ * @param linkTab 链表
+ * @param arg     参数
+ */
+void ForeachDeal(plinkTab linkTab, void* otherArg, void* DealHandel(plinkTab linkTab, void* arg, void* otherArg))
+{
+
+    pnode p = linkTab->pHead;
+    pnode q = p;
+    // int n = linkTab->sum;
+	while(p)
+	{
+        q = p->next;
+		DealHandel(linkTab, p, otherArg);
+        printf("here%p\n",p);
+		p = q;
+	}
+}

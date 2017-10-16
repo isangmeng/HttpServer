@@ -20,6 +20,7 @@ EventTree* InitEventTree(unsigned int ActiveEventNum)
     eventTree->ActiveEventNum = ActiveEventNum-1;
     eventTree->HasNum = 0;
     eventTree->ActiveEvent = (struct epoll_event*)malloc(sizeof(struct epoll_event) * eventTree->ActiveEventNum);
+    eventTree->AllEvent = CreatLinkTab();
     if(eventTree->ActiveEvent == NULL)
     {
         printf("malloc eventTree error:\n");
@@ -43,12 +44,12 @@ EventNode* CreateEventNode(int fd, int event, void* task)
         printf("malloc error\n");
         exit(1);
     }
-
     newNode->task = task;
     newNode->task->arg = task;
 
     newNode->event = event;
     newNode->fd = fd;
+    newNode->time = time(NULL);
     return newNode;
 }
 
@@ -66,7 +67,8 @@ void AddEvent(EventTree* eventTree, EventNode* newNode)
     epoll_ctl(eventTree->Root, EPOLL_CTL_ADD, newNode->fd, new);
     eventTree->HasNum++;
     pthread_mutex_unlock(&eventTree->TreeLock);
-    free(new);
+    AddLinkTabNode(eventTree->AllEvent, newNode);
+    // free(new);
 }
 
 /**
@@ -79,11 +81,12 @@ void DeleteEvent(EventTree* eventTree, EventNode* deleteNode)
     printf("删除事件");
     pthread_mutex_lock(&(eventTree->TreeLock));
     epoll_ctl(eventTree->Root, EPOLL_CTL_DEL, deleteNode->fd, NULL);
-    close(deleteNode->fd);
+    // close(deleteNode->fd);
     eventTree->HasNum--;
-    deleteNode->task->DestroyTask(deleteNode->task->arg);
+    // deleteNode->task->DestroyTask(deleteNode->task->arg);
     pthread_mutex_unlock(&eventTree->TreeLock);
-    free(deleteNode);
+    DeleteLinkTabNode(eventTree->AllEvent, deleteNode);
+    // free(deleteNode);
 }
 
 /**
@@ -92,6 +95,7 @@ void DeleteEvent(EventTree* eventTree, EventNode* deleteNode)
  */
 void WaitEvent(EventTree* eventTree)
 {
+    EventNode* activeNode;
     while(1)
     {
         pthread_mutex_lock(&eventTree->ActiveEventLock);
@@ -101,23 +105,31 @@ void WaitEvent(EventTree* eventTree)
         for(int i=0; i<nready; i++)
         {
             printf("处理事件\n");
-            EventNode* activeNode = (EventNode*)(eventTree->ActiveEvent[i].data.ptr);
+            activeNode = (EventNode*)(eventTree->ActiveEvent[i].data.ptr);
             // activeNode->CallHandel(activeNode->arg);
-
+            activeNode->time = time(NULL);
             AddTask(pool, activeNode->task);
             // activeNode->task->CallHandel(activeNode->task->arg);
 
             pthread_mutex_lock(&activeNode->task->lockIsLive);
             printf("活动事件活%d\n", activeNode->task->isLive);
-            if(activeNode->task->isLive == 0)
-            {
-                printf("删除任务，删除事件\n");
-                // activeNode->task->DestroyTask(activeNode->task->arg);
-                DeleteEvent(eventTree,activeNode);
-            }
+            // if(activeNode->task->isLive == 0)
+            // {
+            //     printf("删除任务，删除事件\n");
+            //     // activeNode->task->DestroyTask(activeNode->task->arg);
+            //     DeleteEvent(eventTree,activeNode);
+            // }
             pthread_mutex_unlock(&activeNode->task->lockIsLive);
-            // DeleteEvent(eventTree, activeNode);
+
+                // DeleteEvent(eventTree, activeNode);
         }
+        // for(int i=0; i<nready; i++)
+        // {
+        //     activeNode = (EventNode*)(eventTree->ActiveEvent[i].data.ptr);
+        //     if(activeNode->fd != 3)
+        //         DeleteEvent(eventTree, activeNode);
+        // }
+
         nready = 0;
         pthread_mutex_unlock(&eventTree->ActiveEventLock);
 

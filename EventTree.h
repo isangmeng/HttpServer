@@ -9,6 +9,7 @@
 #include <malloc.h>
 #include <stdlib.h>
 #include "BaseTask.h"
+#include "linkTab.h"
 
 typedef struct EventNode{
     void* next;
@@ -16,6 +17,7 @@ typedef struct EventNode{
     int fd;                            //socket
     int event;                         //事件
     Task* task;                        //任务
+    int time;                          //时间，用于清除长时间没有使用的客户端 
     // void (*CallHandel)(void* myself);  //回调函数
     // void* arg;                         //回调函数参数
 }EventNode;
@@ -27,6 +29,7 @@ typedef struct EventTree{
     pthread_mutex_t ActiveEventLock;    //活动事件锁
     unsigned int ActiveEventNum;        //活动事件数组大小
     unsigned int HasNum;                //当前的节点数
+    plinkTab AllEvent;                  //所有事件
 }EventTree;
 
 /**

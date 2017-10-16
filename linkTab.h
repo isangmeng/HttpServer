@@ -90,5 +90,10 @@ void* SearchlinkTabNode(plinkTab linkTab, int condition(void* linkNode, void* ai
  */
 void ShowLinkTab(plinkTab linkTab);
 
-
+/**
+ * 对每个节点执行函数
+ * @param linkTab 链表
+ * @param arg     参数
+ */
+void ForeachDeal(plinkTab linkTab,void* otherArg, void* DealHandel(plinkTab linkTab, void* arg, void* otherArg));
 #endif

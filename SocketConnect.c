@@ -30,7 +30,7 @@ SocketConnect* InitSocket(uint16_t port)
         printf("bind error%s\n" ,strerror(n));
         exit(1);
     }
-    listen(server->ServerFd, 10);
+    listen(server->ServerFd, 100);
     return server;
 }
 

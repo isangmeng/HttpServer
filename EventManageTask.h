@@ -1,0 +1,29 @@
+/**
+ *  管理事件树
+ */
+#ifndef _EVENT_TASK_H_
+#define _EVENT_TASK_H_
+#include "global.h"
+#include <unistd.h>
+typedef struct EventManageTask{
+    void* next;
+    void* pre;
+    void* (*CallHandel)(void* arg);
+    void* arg;
+    int isLive;
+    void* (*DestroyTask)(void* arg);
+    pthread_mutex_t lockIsLive;
+
+    EventTree* eventTree;
+}EventManageTask;
+
+typedef struct param{
+
+}param;
+
+EventManageTask* CreateEventManageTask(EventTree* eventTree);
+
+void* ManageEvent(void* arg);
+
+void* DealHandel(plinkTab linkTab, void* arg, void* otherArg);
+#endif
