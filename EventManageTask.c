@@ -32,12 +32,11 @@ void* ManageEvent(void* arg)
 
 void* DealHandel(plinkTab linkTab, void* arg, void* otherArg)
 {
-    printf("fuck\n");
     EventTree* tree = (EventTree*)otherArg;
     EventNode* node = (EventNode*)arg;
     int now = time(NULL);
 
-    if(now - node->time > 10){
+    if(node->nodie == 0 && now - node->time > 3){
         DeleteEvent(tree, node);
     }
     return NULL;

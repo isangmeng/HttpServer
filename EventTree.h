@@ -17,7 +17,8 @@ typedef struct EventNode{
     int fd;                            //socket
     int event;                         //事件
     Task* task;                        //任务
-    int time;                          //时间，用于清除长时间没有使用的客户端 
+    int time;                          //时间，用于清除长时间没有使用的客户端
+    int nodie;                         //一直存在的任务
     // void (*CallHandel)(void* myself);  //回调函数
     // void* arg;                         //回调函数参数
 }EventNode;

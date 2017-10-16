@@ -52,7 +52,7 @@ void* Handle(void* arg)
     //     // free(new);
     //     // AddEvent(eventTree,  CreateEventNode(task->clientFd, EPOLLIN|EPOLLET, task));
     // }
-    write(task->clientFd, "fuck you !\n", 11);
+    write(task->clientFd, "qyuo sld !\n", 11);
     free(buf);
     // epoll_ctl(eventTree->Root, EPOLL_CTL_DEL, task->clientFd, NULL);
     // close(task->clientFd);

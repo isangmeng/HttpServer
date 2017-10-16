@@ -47,6 +47,7 @@ EventNode* CreateEventNode(int fd, int event, void* task)
     newNode->task = task;
     newNode->task->arg = task;
 
+    newNode->nodie = 0;
     newNode->event = event;
     newNode->fd = fd;
     newNode->time = time(NULL);

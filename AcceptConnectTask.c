@@ -24,7 +24,6 @@ AcceptConnectTask* CreatAcceptConnectTask(SocketConnect* server)
 void* AcceptHandle(void* arg)
 {
     AcceptConnectTask* AcceptTask = (AcceptConnectTask*)arg;
-
     struct sockaddr_in client;
 
     socklen_t len = sizeof(client);
