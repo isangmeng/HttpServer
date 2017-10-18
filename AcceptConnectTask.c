@@ -36,7 +36,7 @@ void* AcceptHandle(void* arg)
         EventNode* node = CreateEventNode(con, EPOLLIN|EPOLLET|EPOLLONESHOT, task);
         AddEvent(eventTree, node);
     }
-    if(con < 0)
+    if(con <= 0)
         printf("%s\n",strerror(con));
     if(DEBUG)
         printf("客户端连接%d\n",con);

@@ -17,10 +17,6 @@ typedef struct EventManageTask{
     EventTree* eventTree;
 }EventManageTask;
 
-typedef struct param{
-
-}param;
-
 EventManageTask* CreateEventManageTask(EventTree* eventTree);
 
 void* ManageEvent(void* arg);

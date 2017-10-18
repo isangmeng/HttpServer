@@ -3,4 +3,6 @@ testEpoll:
 testPool:
 	gcc -o testPool testPool.c ../CPthreadPool.c -pthread ../linkTab.c ../Queue.c
 testSocket:
-		gcc -o testSocket testSocket.c ../SocketConnect.c ../AcceptConnectTask.c ../CPthreadPool.c ../EventTree.c ../HttpTask.c -pthread ../linkTab.c ../Queue.c
+	gcc -o testSocket testSocket.c ../SocketConnect.c ../AcceptConnectTask.c ../CPthreadPool.c ../EventTree.c ../HttpTask.c -pthread ../linkTab.c ../Queue.c
+testLink:
+	gcc -o testLink testLink.c -pthread ../linkTab.c ../CPthreadPool.c ../Queue.c

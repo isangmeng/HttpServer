@@ -35,8 +35,9 @@ void* DealHandel(plinkTab linkTab, void* arg, void* otherArg)
     EventTree* tree = (EventTree*)otherArg;
     EventNode* node = (EventNode*)arg;
     int now = time(NULL);
+    printf("%d,%d\n", node->nodie,node->fd);
+    if(node->nodie == 0 && now - node->time > 30){
 
-    if(node->nodie == 0 && now - node->time > 3){
         DeleteEvent(tree, node);
     }
     return NULL;

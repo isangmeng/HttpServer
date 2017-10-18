@@ -190,13 +190,15 @@ void ForeachDeal(plinkTab linkTab, void* otherArg, void* DealHandel(plinkTab lin
 {
 
     pnode p = linkTab->pHead;
-    pnode q = p;
+    // pnode q = p;
+    printf("all%d,here%p\n",linkTab->sum, p);
     // int n = linkTab->sum;
 	while(p)
 	{
-        q = p->next;
+        // q = p->next;
 		DealHandel(linkTab, p, otherArg);
-        printf("here%p\n",p);
-		p = q;
+        // printf("here%p\n",p);
+		// p = q;
+		p = p->next;
 	}
 }

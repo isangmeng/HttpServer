@@ -82,9 +82,10 @@ void DeleteEvent(EventTree* eventTree, EventNode* deleteNode)
     printf("删除事件");
     pthread_mutex_lock(&(eventTree->TreeLock));
     epoll_ctl(eventTree->Root, EPOLL_CTL_DEL, deleteNode->fd, NULL);
-    // close(deleteNode->fd);
+    close(deleteNode->fd);
     eventTree->HasNum--;
-    // deleteNode->task->DestroyTask(deleteNode->task->arg);
+    deleteNode->task->DestroyTask(deleteNode->task);
+    // free(deleteNode->task);
     pthread_mutex_unlock(&eventTree->TreeLock);
     DeleteLinkTabNode(eventTree->AllEvent, deleteNode);
     // free(deleteNode);
