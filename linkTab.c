@@ -62,6 +62,7 @@ int DeleteLinkTab(plinkTab linkTab)
 int AddLinkTabNode(plinkTab linkTab, void* linkNodeV)
 {
 	pnode linkNode = (pnode)linkNodeV;
+    pthread_mutex_lock(&(linkTab->mutex));
 	if(linkTab == NULL || linkNode == NULL)
 	{
 		return -1;
@@ -81,6 +82,7 @@ int AddLinkTabNode(plinkTab linkTab, void* linkNodeV)
 		linkTab->pTail = linkNode;
 	}
 	linkTab->sum++;
+    pthread_mutex_unlock(&(linkTab->mutex));
 	return 0;
 }
 
@@ -117,6 +119,7 @@ int DeleteLinkTabNode(plinkTab linkTab, void* linkNode)
     {
         if(pTempNode->next == linkNode)
         {
+            linkTab->pTail = pTempNode;
             pTempNode->next = pTempNode->next->next;
             linkTab->sum -= 1 ;
             if(linkTab->sum == 0)
