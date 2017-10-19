@@ -220,7 +220,7 @@ void* Handel(void* arg)
             pthread_t pid = pthread_self();
             void* p = SearchlinkTabNode(pool->Pool, SearchPthreadCondition, (void*)pid);
             DeleteLinkTabNode(pool->Pool, p);
-            // printf("%ld退出\n", pthread_self());
+            printf("%ld退出\n", pthread_self());
             pthread_exit(NULL);
             // DeleteLinkTabNode(plinkTab linkTab, void *linkNode)
         }

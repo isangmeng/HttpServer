@@ -23,7 +23,7 @@ void* ManageEvent(void* arg)
     while(1)
     {
         events = manage->eventTree->AllEvent;
-        printf("扫描超时任务\n");
+        // printf("扫描超时任务\n");
         ForeachDeal(events, (void*)manage->eventTree, DealHandel);
         usleep(700);
     }
@@ -35,9 +35,9 @@ void* DealHandel(plinkTab linkTab, void* arg, void* otherArg)
     EventTree* tree = (EventTree*)otherArg;
     EventNode* node = (EventNode*)arg;
     int now = time(NULL);
-    printf("%d,%d\n", node->nodie,node->fd);
-    if(node->nodie == 0 && now - node->time > 5){
 
+    if(node->nodie == 0 && now - node->time > 5){
+        printf("删除事件%d,%d\n", node->nodie,node->fd);
         DeleteEvent(tree, node);
     }
     return NULL;

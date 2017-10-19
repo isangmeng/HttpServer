@@ -23,23 +23,23 @@ void* Handle(void* arg)
     HttpTask* task = (HttpTask*)arg;
     char* buf = (char*)malloc(sizeof(char)*1024);
 
-    // printf("客户端发来消息，关闭\n");
+    printf("客户端发来消息，关闭\n");
     task->isLive = 1;
 
-    while(1)
-    {
-        int n = read(task->clientFd, buf, 1024);
-        if(n > 0)
-        {
-            buf[n] = '\0';
-            printf("%s\n", buf);
-            write(task->clientFd, buf, sizeof(buf));
-        }else{
-            pthread_mutex_lock(&task->lockIsLive);
-            task->isLive = 0;
-            pthread_mutex_unlock(&task->lockIsLive);
-            break;
-        }
+    // while(1)
+    // {
+    //     int n = read(task->clientFd, buf, 1024);
+    //     if(n > 0)
+    //     {
+    //         buf[n] = '\0';
+    //         printf("%s\n", buf);
+    //         write(task->clientFd, buf, sizeof(buf));
+    //     }else{
+    //         pthread_mutex_lock(&task->lockIsLive);
+    //         task->isLive = 0;
+    //         pthread_mutex_unlock(&task->lockIsLive);
+    //         break;
+    //     }
     //     task->isLive = 0;
     //
     //
@@ -52,10 +52,10 @@ void* Handle(void* arg)
     //     // pthread_mutex_unlock(&eventTree->TreeLock);
     //     // free(new);
     //     // AddEvent(eventTree,  CreateEventNode(task->clientFd, EPOLLIN|EPOLLET, task));
-    }
-    // write(task->clientFd, "qyuo sld !\n", 11);
+    // }
+    write(task->clientFd, "qyuo sld !\n", 11);
     free(buf);
-    while(1);
+    // while(1);
     // epoll_ctl(eventTree->Root, EPOLL_CTL_DEL, task->clientFd, NULL);
     // close(task->clientFd);
     // task->DestroyTask(task->arg);
