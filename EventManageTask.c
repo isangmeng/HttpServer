@@ -36,7 +36,7 @@ void* DealHandel(plinkTab linkTab, void* arg, void* otherArg)
     EventNode* node = (EventNode*)arg;
     int now = time(NULL);
 
-    if(node->nodie == 0 && now - node->time > 5){
+    if(node->nodie == 0 && now - node->time > 7){
         printf("删除事件%d,%d\n", node->nodie,node->fd);
         DeleteEvent(tree, node);
     }

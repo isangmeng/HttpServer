@@ -123,7 +123,7 @@ unsigned int GetSumPthread(PthreadPool* pool);
  * 线程回调函数
  * @param arg 参数
  */
-void* Handel(void* arg);
+static void* Handel(void* arg);
 
 
 /**

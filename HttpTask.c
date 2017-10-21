@@ -22,24 +22,40 @@ void* Handle(void* arg)
 {
     HttpTask* task = (HttpTask*)arg;
     char* buf = (char*)malloc(sizeof(char)*1024);
-
+    if(buf == NULL)
+    {
+        printf("buffer alloc error\n");
+        exit(0);
+    }
     printf("客户端发来消息，关闭\n");
     task->isLive = 1;
 
+    // HTTP/1.1 200 OK
+    //
+    //
+    //
+    // Server:Apache Tomcat/5.0.12
+    //
+    // Date:Mon,6Oct2003 13:23:42 GMT
+    //
+    // Content-Length:112
     // while(1)
     // {
-    //     int n = read(task->clientFd, buf, 1024);
+        int n = read(task->clientFd, buf, 1024);
+    //
     //     if(n > 0)
     //     {
     //         buf[n] = '\0';
     //         printf("%s\n", buf);
-    //         write(task->clientFd, buf, sizeof(buf));
-    //     }else{
-    //         pthread_mutex_lock(&task->lockIsLive);
-    //         task->isLive = 0;
-    //         pthread_mutex_unlock(&task->lockIsLive);
-    //         break;
-    //     }
+            sprintf(buf, "HTTP/1.0 200 OK\r\nServer:Codelover\r\nConnection: Close\r\nDate:Mon,6Oct2003 13:23:42 GMT\r\nContent-Length:30\r\n\r\n<h1>codelover http server</h1>");
+        //     write(task->clientFd, buf, strlen(buf));
+        //     break;
+        // }else{
+        //     pthread_mutex_lock(&task->lockIsLive);
+        //     task->isLive = 0;
+        //     pthread_mutex_unlock(&task->lockIsLive);
+        //     break;
+        // }
     //     task->isLive = 0;
     //
     //
@@ -53,7 +69,7 @@ void* Handle(void* arg)
     //     // free(new);
     //     // AddEvent(eventTree,  CreateEventNode(task->clientFd, EPOLLIN|EPOLLET, task));
     // }
-    write(task->clientFd, "qyuo sld !\n", 11);
+    // write(task->clientFd, buf, strlen(buf));
     free(buf);
     // while(1);
     // epoll_ctl(eventTree->Root, EPOLL_CTL_DEL, task->clientFd, NULL);
@@ -67,8 +83,8 @@ void* Handle(void* arg)
 void* DestroyHandle(void* arg)
 {
     HttpTask* task = (HttpTask*)arg;
-    // close(task->clientFd);
-    shutdown(task->clientFd,SHUT_RDWR);
+    close(task->clientFd);
+    // shutdown(task->clientFd,SHUT_RDWR);
     // free(task);
     return NULL;
 }
