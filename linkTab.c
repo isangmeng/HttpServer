@@ -191,7 +191,7 @@ void ShowLinkTab(plinkTab linkTab)
  */
 void ForeachDeal(plinkTab linkTab, void* otherArg, void* DealHandel(plinkTab linkTab, void* arg, void* otherArg))
 {
-
+    pthread_mutex_lock(&(linkTab->mutex));
     pnode p = linkTab->pHead;
     // pnode q = p;
     // printf("all%d,here%p\n",linkTab->sum, p);
@@ -204,4 +204,5 @@ void ForeachDeal(plinkTab linkTab, void* otherArg, void* DealHandel(plinkTab lin
 		// p = q;
 		p = p->next;
 	}
+    pthread_mutex_unlock(&(linkTab->mutex));
 }

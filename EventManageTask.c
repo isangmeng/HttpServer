@@ -15,7 +15,7 @@ EventManageTask* CreateEventManageTask(EventTree* eventTree)
     pthread_mutex_init(&manage->lockIsLive, NULL);
     return manage;
 }
-void* ManageEvent(void* arg)
+static void* ManageEvent(void* arg)
 {
     EventManageTask* manage = (EventManageTask*)arg;
     plinkTab events = manage->eventTree->AllEvent;
@@ -30,13 +30,13 @@ void* ManageEvent(void* arg)
     return NULL;
 }
 
-void* DealHandel(plinkTab linkTab, void* arg, void* otherArg)
+static void* DealHandel(plinkTab linkTab, void* arg, void* otherArg)
 {
     EventTree* tree = (EventTree*)otherArg;
     EventNode* node = (EventNode*)arg;
     int now = time(NULL);
 
-    if(node->nodie == 0 && now - node->time > 7){
+    if(node->task->isLive==0 && node->nodie == 0 && now - node->time > 7){
         printf("删除事件%d,%d\n", node->nodie,node->fd);
         DeleteEvent(tree, node);
     }

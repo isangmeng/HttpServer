@@ -19,7 +19,7 @@ typedef struct EventManageTask{
 
 EventManageTask* CreateEventManageTask(EventTree* eventTree);
 
-void* ManageEvent(void* arg);
+static void* ManageEvent(void* arg);
 
-void* DealHandel(plinkTab linkTab, void* arg, void* otherArg);
+static void* DealHandel(plinkTab linkTab, void* arg, void* otherArg);
 #endif

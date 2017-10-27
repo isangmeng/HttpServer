@@ -1,6 +1,8 @@
 #include "HttpTask.h"
 #include "EventTree.h"
 #include "global.h"
+#include <errno.h>
+#include <string.h>
 #include <malloc.h>
 #include <unistd.h>
 #include<sys/socket.h>
@@ -39,23 +41,27 @@ void* Handle(void* arg)
     // Date:Mon,6Oct2003 13:23:42 GMT
     //
     // Content-Length:112
-    // while(1)
-    // {
+    while(1)
+    {
         int n = read(task->clientFd, buf, 1024);
     //
-    //     if(n > 0)
-    //     {
+        if(n > 0)
+        {
     //         buf[n] = '\0';
     //         printf("%s\n", buf);
             sprintf(buf, "HTTP/1.0 200 OK\r\nServer:Codelover\r\nConnection: Close\r\nDate:Mon,6Oct2003 13:23:42 GMT\r\nContent-Length:30\r\n\r\n<h1>codelover http server</h1>");
-        //     write(task->clientFd, buf, strlen(buf));
+            write(task->clientFd, buf, strlen(buf));
         //     break;
-        // }else{
+        }else{
+            if(errno == EINTR)
+                continue;
+            else
+                break;
         //     pthread_mutex_lock(&task->lockIsLive);
-        //     task->isLive = 0;
+            // task->isLive = 0;
         //     pthread_mutex_unlock(&task->lockIsLive);
         //     break;
-        // }
+        }
     //     task->isLive = 0;
     //
     //
@@ -68,7 +74,7 @@ void* Handle(void* arg)
     //     // pthread_mutex_unlock(&eventTree->TreeLock);
     //     // free(new);
     //     // AddEvent(eventTree,  CreateEventNode(task->clientFd, EPOLLIN|EPOLLET, task));
-    // }
+    }
     // write(task->clientFd, buf, strlen(buf));
     free(buf);
     // while(1);

@@ -202,6 +202,7 @@ static void* Handel(void* arg)
 
             // printf("运行任务\n");
         }
+        task->isLive = 0;
         //是否需要退出
         pthread_mutex_lock(&pool->LockDelete);
         if(pool->DeleteNum > 0)
