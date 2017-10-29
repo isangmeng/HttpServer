@@ -36,6 +36,11 @@ typedef struct cl_link{
     int                 sum;            //节点数
 }cl_link;
 
+#define cl_link_get_node(aim, type, node)      \
+    ((type *) ((u_char *) aim + offsetof(type, node)))
+
+#define cl_link_get_data(aim, type, node)      \
+    ((type *) ((u_char *) aim - offsetof(type, node)))
 /**
  * 创建一个链表对象
  * @return 链表对象地址
@@ -63,6 +68,8 @@ void* cl_link_pop(cl_link* link);
  * @param handler 处理函数
  */
 void cl_link_each(cl_link* link, void* res[], void* (*handler)(void* node));
+
+
 
 
 #endif
