@@ -2,6 +2,8 @@
 #define _CL_LINK_H
 
 #include <pthread.h>
+#include <malloc.h>
+#include <unistd.h>
 
 #define ADD_SUCCESS 0
 #define ADD_FAIL -1
@@ -27,10 +29,10 @@ typedef struct cl_link_node{
  * @return
  */
 typedef struct cl_link{
-    pthread_mutex_t cl_link_mutext;     //链表锁
-    cl_link_node cl_link_head;          //链表头
-    cl_link_node cl_link_tail;          //链表尾
-    int sum;                            //节点数
+    pthread_mutex_t     cl_link_mutex;  //链表锁
+    cl_link_node        cl_link_head;   //链表头
+    cl_link_node        cl_link_tail;   //链表尾
+    int                 sum;            //节点数
 }cl_link;
 
 /**
