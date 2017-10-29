@@ -10,6 +10,7 @@
 #define DELETE_SUCCESS 0
 #define SELETE_FAIL -1
 
+
 typedef struct cl_link_node cl_link_node;
 typedef struct cl_link cl_link;
 
@@ -55,8 +56,12 @@ int cl_link_push(cl_link* link, void* node);
  */
 void* cl_link_pop(cl_link* link);
 
-
-
+/**
+ * 对每个节点进行处理
+ * @param link    链表对象
+ * @param handler 处理方法
+ */
+void cl_link_each(cl_link* link, void** res, void* (*handler)(void* node));
 
 
 #endif

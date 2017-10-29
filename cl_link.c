@@ -74,3 +74,27 @@ void* cl_link_pop(cl_link* link)
         return NULL;
     }
 }
+
+/**
+ * 对每个节点进行处理
+ * @param link    链表对象
+ * @param handler 处理方法
+ */
+void cl_link_each(cl_link* link, void** res, void* (*handler)(void* node))
+{
+    pthread_mutex_lock(&(link->cl_link_mutex));
+    int n = link->sum;
+    void* r;
+    cl_link_node* p = link->cl_link_head.next;
+    while(n)
+    {
+        r = handler(p);
+        if(res != NULL)
+        {
+            res[n] = r;
+        }
+        n--;
+        p = p->next;
+    }
+    pthread_mutex_unlock(&(link->cl_link_mutex));
+}
