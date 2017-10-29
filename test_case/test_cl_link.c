@@ -3,15 +3,16 @@
 #include <stdlib.h>
 
 typedef struct test{
-    cl_link_node node;
+
     int n;
+    cl_link_node node;
 }test;
 
 void* handler(void *arg)
 {
     int* r = malloc(sizeof(int));
     *r = rand()%10;
-    printf("%d\n", ((test*)arg)->n);
+    printf("%d\n", cl_link_get_data(arg, test, node)->n);
     return r;
 }
 int main(){
@@ -20,15 +21,15 @@ int main(){
     for(int i=0; i<10; i++){
         test* a = malloc(sizeof(test));
         a->n = i;
-        cl_link_push(link, a);
+        cl_link_add_back(link, cl_link_get_node(a,test,node));
 
-        // if(i == 9 || i == 6){
-        //     cl_link_pop(link);
-        // }
+        if( i == 9){
+            cl_link_get_front(link);
+        }
     }
     cl_link_each(link, res, handler);
-    for(int i=0; i<10; i++){
-        printf("%d\n", *(int*)(res[i]));
-    }
+    // for(int i=0; i<10; i++){
+    //     printf("%d\n", *(int*)(res[i]));
+    // }
     return 0;
 }
