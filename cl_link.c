@@ -63,7 +63,10 @@ void* cl_link_pop(cl_link* link)
 {
     pthread_mutex_lock(&(link->cl_link_mutex));
     if(link->sum){
-        void* aim = link->cl_link_head.next;
+        cl_link_node* aim = link->cl_link_head.next;
+        link->cl_link_head.next = aim->next;
+        aim->next->prev = &(link->cl_link_head);
+        link->sum--;
         pthread_mutex_unlock(&(link->cl_link_mutex));
         return aim;
     }else{
