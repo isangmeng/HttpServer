@@ -5,12 +5,12 @@
 #include <malloc.h>
 #include <unistd.h>
 
-#define ADD_SUCCESS 0
-#define ADD_FAIL -1
-#define DELETE_SUCCESS 0
-#define SELETE_FAIL -1
-#define CANFIND 1
-#define NOTFIND 0
+#define ADD_SUCCESS (0)
+#define ADD_FAIL (-1)
+#define DELETE_SUCCESS (0)
+#define SELETE_FAIL (-1)
+#define CANFIND (1)
+#define NOTFIND (0)
 
 typedef struct cl_link_node cl_link_node;
 typedef struct cl_link cl_link;
@@ -37,11 +37,13 @@ typedef struct cl_link{
     int                 sum;            //节点数
 }cl_link;
 
-#define cl_link_get_node(aim, type, node)      \
-    ((cl_link_node *) ((u_char *) aim + offsetof(type, node)))
+#define cl_link_get_node(aim, type, node)       \
+    (cl_link_node *) ((u_char *) aim + offsetof(type, node))
+
 
 #define cl_link_get_data(aim, type, node)      \
-    ((type *) ((u_char *) aim - offsetof(type, node)))
+    (type *) ((u_char *) aim - offsetof(type, node))
+
 /**
  * 创建一个链表对象
  * @return 链表对象地址
