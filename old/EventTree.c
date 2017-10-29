@@ -1,5 +1,6 @@
 #include "EventTree.h"
 #include "global.h"
+#include <errno.h>
 #include <unistd.h>
 
 /**
@@ -102,6 +103,12 @@ void WaitEvent(EventTree* eventTree)
     {
         pthread_mutex_lock(&eventTree->ActiveEventLock);
         int nready = epoll_wait(eventTree->Root, eventTree->ActiveEvent, eventTree->ActiveEventNum, -1);
+        if(errno == EINTR)
+        {
+            pthread_mutex_unlock(&eventTree->ActiveEventLock);
+            continue;
+        }
+
         if(DEBUG)
             printf("所有事件:%d,活动事件%d\n", eventTree->HasNum,nready);
         for(int i=0; i<nready; i++)
