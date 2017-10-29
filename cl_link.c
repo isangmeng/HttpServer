@@ -86,16 +86,19 @@ void cl_link_each(cl_link* link, void* res[], void* (*handler)(void* node))
     pthread_mutex_lock(&(link->cl_link_mutex));
     int n = link->sum;
     void* r;
+
     cl_link_node* p = link->cl_link_head.next;
+    cl_link_node* todo = p;
     while(n)
     {
-        r = handler(p);
+        todo = p;
+        p = p->next;
+        r = handler(todo);
         if(res != NULL)
         {
             res[link->sum-n] = r;
         }
         n--;
-        p = p->next;
     }
     pthread_mutex_unlock(&(link->cl_link_mutex));
 }
@@ -135,4 +138,30 @@ int cl_link_add_back(cl_link* link, void* node)
 void* cl_link_get_front(cl_link* link)
 {
     return cl_link_pop(link);
+}
+
+/**
+ * 根据key查找节点
+ * @param link      链表对象
+ * @param key       关键字
+ * @param condition 条件
+ */
+void* cl_link_find(cl_link* link, void* key, int (*condition)(void* node, void* key))
+{
+    pthread_mutex_lock(&(link->cl_link_mutex));
+    int n = link->sum;
+    cl_link_node* p = link->cl_link_head.next;
+    while(n)
+    {
+        if(condition(p, key) == CANFIND)
+        {
+            pthread_mutex_unlock(&(link->cl_link_mutex));
+            return p;
+        }
+
+        p = p->next;
+        n--;
+    }
+    pthread_mutex_unlock(&(link->cl_link_mutex));
+    return NULL;
 }
