@@ -57,11 +57,12 @@ int cl_link_push(cl_link* link, void* node);
 void* cl_link_pop(cl_link* link);
 
 /**
- * 对每个节点进行处理
+ * 对每个节点进行操作
  * @param link    链表对象
- * @param handler 处理方法
+ * @param res     返回值
+ * @param handler 处理函数
  */
-void cl_link_each(cl_link* link, void** res, void* (*handler)(void* node));
+void cl_link_each(cl_link* link, void* res[], void* (*handler)(void* node));
 
 
 #endif
