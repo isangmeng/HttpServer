@@ -69,7 +69,20 @@ void* cl_link_pop(cl_link* link);
  */
 void cl_link_each(cl_link* link, void* res[], void* (*handler)(void* node));
 
+/**
+ * 队尾添加元素
+ * @param  link 队列对象
+ * @param  node 新节点
+ * @return      添加状态
+ */
+int cl_link_add_back(cl_link* link, void* node);
 
+/**
+ * 队头获取元素
+ * @param  link 队列对象
+ * @return      取得的元素
+ */
+void* cl_link_get_front(cl_link* link);
 
 
 #endif
