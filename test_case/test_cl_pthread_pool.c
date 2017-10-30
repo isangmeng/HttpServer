@@ -10,7 +10,7 @@ typedef struct task{
 
 void* handler(void* arg)
 {
-    task* t = arg;
+    // task* t = arg;
     // printf("%d\n", t->n);
 
     sleep(4);
