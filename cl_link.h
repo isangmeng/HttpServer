@@ -4,6 +4,7 @@
 #include <pthread.h>
 #include <malloc.h>
 #include <unistd.h>
+#include <stdlib.h>
 
 #define ADD_SUCCESS (0)
 #define ADD_FAIL (-1)
