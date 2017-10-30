@@ -42,7 +42,7 @@ int main(){
 
     test* t = cl_link_find(link, (void *)5, condition);
     if(t != NULL)
-    printf("%d\n", cl_link_get_data(t,test,node)->n);
+    printf("%d\n", (cl_link_get_data(t,test,node))->n);
     cl_link_each(link, res, handler);
     return 0;
 }
