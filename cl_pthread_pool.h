@@ -23,6 +23,7 @@ typedef struct cl_pthread_pool{
     pthread_mutex_t     pool_mutex;         //线程池锁
     cl_link*            task_queue;         //任务队列
     cl_link*            pthread_pool;       //线程池
+    cl_link*            finish_task;        //已经完成的任务
     int                 waiting;            //等待的任务数量
     int                 active;             //正在执行的数量
     int                 max;                //最大线程数
@@ -54,6 +55,6 @@ int cl_pthread_pool_add_pthread(cl_pthread_pool* pool);
  * 线程主函数
  * @param arg 参数
  */
-void* cl_pthread_pool_main(void* arg);
+static void* cl_pthread_pool_main(void* arg);
 
 #endif
