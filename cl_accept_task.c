@@ -20,7 +20,7 @@ void* cl_accept_task_main(void* arg)
     cl_accept_task* accept_task = arg;
     while(1)
     {
-        printf("client start\n");
+        // printf("client start\n");
         cl_socket* client = cl_socket_accept(accept_task->server);
         cl_http_event* task = cl_http_event_create(client, accept_task->event);
         cl_event_add_event(accept_task->event, &task->event_node);
