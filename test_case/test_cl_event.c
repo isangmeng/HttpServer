@@ -1,7 +1,7 @@
 #include "../cl_event.h"
 #include <stdio.h>
 #include <string.h>
-
+#include <fcntl.h>
 
 typedef struct event{
     cl_event_node event_node;
@@ -9,17 +9,15 @@ typedef struct event{
     cl_base_task    base_task;
 }event;
 
-// typedef struct task{
-//     cl_base_task    base_task;
-//
-// }task;
+
 cl_event* cl_event1;
 void* handler(void* arg)
 {
     event* e = arg;
-    printf("%s\n", e->buf);
+    read(e->event_node.fd, e->buf, 1024);
     printf("has data\n");
-    cl_event_delete_event(cl_event1, cl_event_get_node(arg, event, event_node));
+    sleep(1);
+    cl_event_add_event(cl_event1, cl_event_get_node(arg, event, event_node));
     return  NULL;
 }
 
@@ -31,9 +29,14 @@ int main()
     event a;
     // a.event_node.fd = STDIN_FILENO;
     strcpy(a.buf, "aaa");
+    a.event_node.fd = STDIN_FILENO;
     a.event_node.events = EPOLLIN;
+    int flags = fcntl(a.event_node.fd,F_GETFL,0);
+    flags |= O_NONBLOCK;
+    fcntl(a.event_node.fd,F_SETFL,flags);
+    pthread_mutex_init(&(a.event_node.event_lock), NULL);
     a.base_task.self = &a;
-    a.event_node.task = &a.base_task;
+    a.event_node.task = &(a.base_task);
     a.base_task.self = &a;
     a.base_task.handler = handler;
     // a.event_node
