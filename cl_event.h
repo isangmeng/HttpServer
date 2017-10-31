@@ -4,6 +4,7 @@
 #include "cl_link.h"
 #include "cl_pthread_pool.h"
 #include <sys/epoll.h>
+#include <errno.h>
 
 
 #define ADDEVENTSUCCESS 1
