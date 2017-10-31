@@ -88,11 +88,13 @@ static void* cl_pthread_pool_main(void* arg)
         while(pool->task_queue->sum == 0){
             pthread_cond_wait(&(pool->has_task), &(pool->pool_mutex));
         }
-        printf("get task\n");
+        // printf("get task\n");
         cl_base_task* task = cl_link_get_front(pool->task_queue);
         pthread_mutex_unlock(&(pool->pool_mutex));
         if(task != NULL){
+            // printf("run handler\n");
             task->handler(task->self);
+            // printf("run finish\n");
         }
         cl_link_add_back(pool->finish_task, task);
     }
