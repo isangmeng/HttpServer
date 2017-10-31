@@ -21,7 +21,7 @@ cl_pthread_pool* cl_pthread_pool_create()
     pool->pthread_pool = cl_link_create();
     pool->task_queue = cl_link_create();
     pool->finish_task = cl_link_create();
-    pool->step = 100;
+    pool->step = 500;
     pthread_cond_init(&(pool->has_task), NULL);
     pthread_mutex_unlock(&(pool->pool_mutex));
     cl_pthread_pool_add_pthread(pool);
