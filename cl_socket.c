@@ -54,6 +54,7 @@ cl_socket* cl_socket_create(const char* ip, const char* port)
  */
 int cl_socket_listen(cl_socket* cl_sockets, int n)
 {
+
     if(cl_sockets) {
         int res = listen(cl_sockets->fd, n);
         if(res < 0)
@@ -118,6 +119,8 @@ int cl_socket_connect(cl_socket* server)
  */
 int cl_socket_bind(cl_socket* server)
 {
+    int opt = 1;
+	setsockopt(server->fd, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt));
     int n = bind(server->fd, (const struct sockaddr *)&server->addr, server->len);
     if(n < 0)
     {
