@@ -7,7 +7,7 @@
 
 typedef struct cl_http_event{
     cl_socket*      client;
-    cl_base_task    task;
+    // cl_base_task    task;
     cl_event_node   event_node;
     cl_event*       event;
 }cl_http_event;
