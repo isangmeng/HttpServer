@@ -34,6 +34,8 @@ void* handler(void* arg)
     // }
     if(n > 0)
         cl_event_add_event(http_task->event, &(http_task->event_node));
+    else
+        shutdown(http_task->client->fd, SHUT_RDWR);
     return NULL;
 }
 void* response(void* arg)
@@ -46,5 +48,7 @@ void* response(void* arg)
     int n = cl_socket_write(http_task->client);
     if(n > 0)
         cl_event_add_event(http_task->event, &(http_task->event_node));
+    else
+        shutdown(http_task->client->fd, SHUT_RDWR);
     return NULL;
 }
