@@ -30,7 +30,7 @@ cl_event* cl_event_create(int n, int m, cl_pthread_pool* pool)
  */
 int cl_event_add_event(cl_event* event, cl_event_node* new_event)
 {
-    printf("try add event\n");
+    // printf("try add event\n");
     pthread_mutex_lock(&(new_event->event_lock));
     if(new_event->status == 0)
     {
@@ -41,7 +41,7 @@ int cl_event_add_event(cl_event* event, cl_event_node* new_event)
         tmp.events = new_event->events;
         epoll_ctl(event->cl_event_root, EPOLL_CTL_ADD, new_event->fd, &tmp);
         cl_link_add_back(event->cl_event_all, cl_link_get_node(new_event, cl_event_node, cl_event));
-        printf("add event ok\n");
+        // printf("add event ok\n");
     }
     pthread_mutex_unlock(&(new_event->event_lock));
     return ADDEVENTSUCCESS;
@@ -56,13 +56,13 @@ int cl_event_add_event(cl_event* event, cl_event_node* new_event)
  */
 int cl_event_delete_event(cl_event* event, cl_event_node* delete_aim)
 {
-    printf("try delete event\n");
+    // printf("try delete event\n");
     pthread_mutex_lock(&(delete_aim->event_lock));
     if(delete_aim->status == 1)
     {
         delete_aim->status = 0;
         epoll_ctl(event->cl_event_root, EPOLL_CTL_DEL, delete_aim->fd, NULL);
-        printf("delete event ok\n");
+        // printf("delete event ok\n");
     }
     pthread_mutex_unlock(&(delete_aim->event_lock));
     return DELETESUCCESS;
@@ -86,7 +86,7 @@ void cl_event_wait_event(cl_event* event)
         }
         for(int j=0; j<nready; j++)
         {
-            printf("添加任务\n");
+            // printf("添加任务\n");
             // cl_base_task_get_base(event->active_event[j].data.ptr, cl_event_node, task)
             // event->active_event[j].data.ptr
             cl_event_delete_event(event, event->active_event[j].data.ptr);
