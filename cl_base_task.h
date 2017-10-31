@@ -9,6 +9,7 @@ typedef struct cl_base_task{
     void*           (*handler)(void* self);     //任务回调函数
     void*           (*destroy)(void* self);     //任务销毁函数
     int             need_destroy;               //是否需要销毁
+    // pthread_mutex_t task_mutex;                 //任务锁
 }cl_base_task;
 
 
