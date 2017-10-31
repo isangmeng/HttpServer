@@ -15,11 +15,15 @@ void* handler(void* arg)
 {
     event* e = arg;
     int n = read(e->event_node.fd, e->buf, 1024);
-    printf("has data,%d\n",n);
+    if(n > 0)
+    {
+        e->buf[n] = '\0';
+        printf("has data,%s\n",e->buf);
+    }
 
     cl_event_add_event(cl_event1, cl_event_get_node(arg, event, event_node));
-    printf("add ok\n");
-    sleep(3);
+    // printf("add ok\n");
+    // sleep(3);
     return  NULL;
 }
 
