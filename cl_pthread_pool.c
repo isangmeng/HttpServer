@@ -21,7 +21,7 @@ cl_pthread_pool* cl_pthread_pool_create()
     pool->pthread_pool = cl_link_create();
     pool->task_queue = cl_link_create();
     pool->finish_task = cl_link_create();
-    pool->step = 10;
+    pool->step = 20;
     pthread_cond_init(&(pool->has_task), NULL);
     pthread_mutex_unlock(&(pool->pool_mutex));
     cl_pthread_pool_add_pthread(pool);
@@ -93,7 +93,9 @@ static void* cl_pthread_pool_main(void* arg)
         pthread_mutex_unlock(&(pool->pool_mutex));
         if(task != NULL){
             // printf("run handler\n");
+            // pthread_mutex_lock(&(task->task_mutex));
             task->handler(task->self);
+            // pthread_mutex_unlock(&(task->task_mutex));
             // printf("run finish\n");
         }
         cl_link_add_back(pool->finish_task, task);
