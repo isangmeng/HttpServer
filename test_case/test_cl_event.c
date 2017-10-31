@@ -14,10 +14,12 @@ cl_event* cl_event1;
 void* handler(void* arg)
 {
     event* e = arg;
-    read(e->event_node.fd, e->buf, 1024);
-    printf("has data\n");
-    sleep(1);
+    int n = read(e->event_node.fd, e->buf, 1024);
+    printf("has data,%d\n",n);
+
     cl_event_add_event(cl_event1, cl_event_get_node(arg, event, event_node));
+    printf("add ok\n");
+    sleep(3);
     return  NULL;
 }
 
@@ -36,15 +38,13 @@ int main()
     fcntl(a.event_node.fd,F_SETFL,flags);
     pthread_mutex_init(&(a.event_node.event_lock), NULL);
     a.base_task.self = &a;
+    a.event_node.status = 0;
     a.event_node.task = &(a.base_task);
     a.base_task.self = &a;
     a.base_task.handler = handler;
-    // a.event_node
+
     cl_event_add_event(cl_event1, cl_event_get_node(&a, event, event_node));
     cl_event_wait_event(cl_event1);
-    while(1)
-    {
-        ;
-    }
+
     return 0;
 }
