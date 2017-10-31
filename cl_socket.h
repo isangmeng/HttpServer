@@ -25,25 +25,6 @@ typedef struct cl_socket{
 }cl_socket;
 
 
-// cl_socket
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
