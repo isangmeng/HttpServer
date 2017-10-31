@@ -20,7 +20,7 @@ typedef struct cl_event_node{
     // char*           buf;            //缓冲区
     long            last_active;    //最后活跃时间
     cl_link_node    cl_event;       //所有事件链表需要
-
+    pthread_mutex_t event_lock;     //事件锁
     void*           task;           //任务指针
 }cl_event_node;
 
