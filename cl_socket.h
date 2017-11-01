@@ -81,4 +81,6 @@ int cl_socket_read(cl_socket* cl_sockets);
 int cl_socket_write(cl_socket* cl_sockets);
 
 
+void cl_socket_destroy(cl_socket* cl_sockets);
+
 #endif

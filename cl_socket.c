@@ -163,3 +163,16 @@ int cl_socket_write(cl_socket* cl_sockets)
     int n = write(cl_sockets->fd, cl_sockets->send_buf, strlen(cl_sockets->send_buf));
     return n;
 }
+
+
+void cl_socket_destroy(cl_socket* cl_sockets)
+{
+    // if(cl_sockets->fd > 0)
+    // {
+    close(cl_sockets->fd);
+    // }
+    munmap(cl_sockets->recv_buf, cl_sockets->buffersize);
+    munmap(cl_sockets->send_buf, cl_sockets->buffersize);
+    printf("delete socket\n");
+    free(cl_sockets);
+}
