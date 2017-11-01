@@ -3,6 +3,9 @@
 
 #include "cl_link.h"
 
+#define NEEDDIE 1
+#define NOTDIE  0
+
 typedef struct cl_base_task{
     cl_link_node    cl_task_node;               //任务队列需要
     void*           self;                       //任务回调参数
