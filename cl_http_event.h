@@ -21,4 +21,6 @@ cl_http_event* cl_http_event_create(cl_socket* client, cl_event* event);
 void* handler(void* arg);
 
 void* response(void* arg);
+
+void* destroy(void* arg);
 #endif

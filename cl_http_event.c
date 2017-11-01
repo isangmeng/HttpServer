@@ -17,6 +17,7 @@ cl_http_event* cl_http_event_create(cl_socket* client, cl_event* event)
     http_task->event_node.task = malloc(sizeof(cl_base_task));
     ((cl_base_task*)(http_task->event_node.task))->self = http_task;
     ((cl_base_task*)(http_task->event_node.task))->handler = handler;
+    ((cl_base_task*)(http_task->event_node.task))->destroy = destroy;
     http_task->event_node.events = EPOLLIN;
     http_task->event = event;
     return http_task;
@@ -28,9 +29,11 @@ void* handler(void* arg)
     cl_http_event* http_task = arg;
     http_task->event_node.events = EPOLLOUT;
     // http_task->task.handler = response;
+    ((cl_base_task*)(http_task->event_node.task))->need_destroy = NEEDDIE;
     http_task->event_node.task = malloc(sizeof(cl_base_task));
     ((cl_base_task*)(http_task->event_node.task))->self = http_task;
     ((cl_base_task*)(http_task->event_node.task))->handler = response;
+
     // while(1)
     // {
         int n = cl_socket_read(http_task->client);
@@ -51,6 +54,7 @@ void* response(void* arg)
     // printf("malloc base task response\n");
     cl_http_event* http_task = arg;
     http_task->event_node.events = EPOLLIN;
+    ((cl_base_task*)(http_task->event_node.task))->need_destroy = NEEDDIE;
     // http_task->task.handler = handler;
     http_task->event_node.task = malloc(sizeof(cl_base_task));
     ((cl_base_task*)(http_task->event_node.task))->self = http_task;
@@ -59,10 +63,39 @@ void* response(void* arg)
     // strcpy(http_task->client->send_buf, "fuck you");
     int n = cl_socket_write(http_task->client);
     // sleep(5);
-    if(n > 0)
-        cl_event_add_event(http_task->event, &(http_task->event_node));
-    else
-        close(http_task->event_node.fd);
+    // if(n > 0)
+    //     cl_event_add_event(http_task->event, &(http_task->event_node));
+    // else
+    //     close(http_task->event_node.fd);
     close(http_task->event_node.fd);
+    munmap(http_task->client->recv_buf, http_task->client->buffersize);
+    munmap(http_task->client->send_buf, http_task->client->buffersize);
+
+    // cl_socket_destroy(http_task->client);
+    // http_task->client = NULL;
     return NULL;
+}
+
+void* destroy(void* arg)
+{
+    cl_http_event* http_task = arg;
+    cl_base_task* base_task = ((cl_base_task*)(http_task->event_node.task));
+    // if(base_task->need_destroy == NEEDDIE && http_task)
+    // {
+    //     cl_socket_destroy(http_task->client);
+    //     http_task->client = NULL;
+    //     http_task->event_node.fd = -1;
+    // }
+    // http_task->event->
+    return NULL;
+
+
+
+
+
+
+
+
+
+
 }
