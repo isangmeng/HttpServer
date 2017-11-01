@@ -51,10 +51,11 @@ int cl_pthread_pool_add_task(cl_pthread_pool* pool, void* task)
  */
 int cl_pthread_pool_add_pthread(cl_pthread_pool* pool)
 {
+    int i;
     pthread_mutex_lock(&(pool->pool_mutex));
     cl_pthread* new_thread;
     int n = ((pool->pthread_pool->sum + pool->step) > pool->max) ? (pool->max - pool->pthread_pool->sum) : pool->step;
-    for(int i=0; i<n; i++){
+    for(i=0; i<n; i++){
         new_thread = malloc(sizeof(cl_pthread));
         pthread_create(&(new_thread->pid), NULL, cl_pthread_pool_main, pool);
         pthread_detach(new_thread->pid);

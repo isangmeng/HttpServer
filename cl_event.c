@@ -74,6 +74,7 @@ int cl_event_delete_event(cl_event* event, cl_event_node* delete_aim)
  */
 void cl_event_wait_event(cl_event* event)
 {
+    int j;
     int nready;
     while(1)
     {
@@ -84,7 +85,7 @@ void cl_event_wait_event(cl_event* event)
             pthread_mutex_unlock(&(event->cl_event_mutex));
             continue;
         }
-        for(int j=0; j<nready; j++)
+        for(j=0; j<nready; j++)
         {
             // printf("添加任务\n");
             // cl_base_task_get_base(event->active_event[j].data.ptr, cl_event_node, task)
