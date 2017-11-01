@@ -12,7 +12,12 @@ void* showf(void* arg)
 {
     // cl_base_task* cb = arg;
     // cl_http_event* ht = cb->self;
-    // printf("%d,%d\n", ht->client->fd,ht->event_node.status);
+    // printf("%d\n", cb->need_destroy);
+    // if(cb->need_destroy == NEEDDIE)
+    // {
+    //     cb->destroy(cb);
+    // }
+    // free(arg);
     return NULL;
 }
 
@@ -23,8 +28,15 @@ void* show(void* arg)
     {
         // m->pool
         printf("%d\n", m->pool->finish_task->sum);
+        cl_base_task* task = cl_link_get_front(m->pool->finish_task);
+        if(task)
+        {
+            // task->destroy(task);
+            free(task);
+        }
+
         // cl_link_each(m->pool->finish_task, NULL, showf);
-        sleep(2);
+        usleep(100);
     }
 
     return NULL;
