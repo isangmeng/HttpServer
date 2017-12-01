@@ -19,11 +19,11 @@
 
 typedef struct cl_socket{
     int                 fd;             //套接字描述符
-    char*               send_buf;       //发送缓存
-    char*               recv_buf;       //接收缓存
+    // char*               send_buf;       //发送缓存
+    // char*               recv_buf;       //接收缓存
     socklen_t           len;            //地址长度
     struct sockaddr_in  addr;           //地址
-    int                 buffersize;     //缓冲区大小
+    // int                 buffersize;     //缓冲区大小
 }cl_socket;
 
 /**
@@ -70,7 +70,7 @@ int cl_socket_bind(cl_socket* server);
  * @param  cl_sockets 要读取的socket
  * @return        read返回值
  */
-int cl_socket_read(cl_socket* cl_sockets);
+int cl_socket_read(cl_socket* cl_sockets, char* buf, size_t len);
 
 
 /**
@@ -78,7 +78,7 @@ int cl_socket_read(cl_socket* cl_sockets);
  * @param  cl_sockets 要发送的数据
  * @return        发情况
  */
-int cl_socket_write(cl_socket* cl_sockets);
+int cl_socket_write(cl_socket* cl_sockets, const char* buf, size_t len);
 
 
 void cl_socket_destroy(cl_socket* cl_sockets);

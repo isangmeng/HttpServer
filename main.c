@@ -24,20 +24,20 @@ void* showf(void* arg)
 void* show(void* arg)
 {
     manage* m = (manage*)arg;
-    while(1)
-    {
-        // m->pool
-        printf("%d\n", m->pool->finish_task->sum);
-        cl_base_task* task = cl_link_get_front(m->pool->finish_task);
-        if(task)
-        {
-            // task->destroy(task);
-            free(task);
-        }
-
-        // cl_link_each(m->pool->finish_task, NULL, showf);
-        usleep(100);
-    }
+    // while(1)
+    // {
+    //     // m->pool
+    //     printf("%d\n", m->pool->finish_task->sum);
+    //     cl_base_task* task = cl_link_get_front(m->pool->finish_task);
+    //     if(task)
+    //     {
+    //         // task->destroy(task);
+    //         free(task);
+    //     }
+    //
+    //     // cl_link_each(m->pool->finish_task, NULL, showf);
+    //     usleep(100);
+    // }
 
     return NULL;
 }
@@ -51,7 +51,7 @@ int main(int argc, char* argv[])
     m->accept_task.handler = show;
     cl_pthread_pool_add_task(pool, cl_base_task_get_base(m, manage, accept_task));
     cl_event* event = cl_event_create(100, 100, pool);
-    cl_accept_task* accept =  cl_accpet_task_create("127.0.0.1", "7777", 10, pool, event);
+    cl_accept_task* accept =  cl_accpet_task_create("0.0.0.0", "7777", 10, pool, event);
     cl_pthread_pool_add_task(pool, cl_base_task_get_base(accept, cl_accept_task, accept_task));
     cl_event_wait_event(event);
     while(1);

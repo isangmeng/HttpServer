@@ -33,10 +33,11 @@ void* handler(void* arg)
     http_task->event_node.task = malloc(sizeof(cl_base_task));
     ((cl_base_task*)(http_task->event_node.task))->self = http_task;
     ((cl_base_task*)(http_task->event_node.task))->handler = response;
-
+    char buf[1024];
     // while(1)
     // {
-        int n = cl_socket_read(http_task->client);
+
+        int n = cl_socket_read(http_task->client, buf, sizeof(buf));
         // if(n <= 0)
         //     break;
         // printf("recv data,%s\n",http_task->client->recv_buf);
@@ -59,19 +60,20 @@ void* response(void* arg)
     http_task->event_node.task = malloc(sizeof(cl_base_task));
     ((cl_base_task*)(http_task->event_node.task))->self = http_task;
     ((cl_base_task*)(http_task->event_node.task))->handler = handler;
-    sprintf(http_task->client->send_buf, "HTTP/1.0 200 OK\r\nServer: Codelover\r\nConnection: Close\r\nDate:Mon,6Oct2003 13:23:42 GMT\r\nContent-Length:30\r\n\r\n<h1>codelover http server</h1>");
+    char buf[1024];
+    sprintf(buf, "HTTP/1.0 200 OK\r\nServer: Codelover\r\nConnection: Close\r\nDate:Mon,6Oct2003 13:23:42 GMT\r\nContent-Length:30\r\n\r\n<h1>codelover http server</h1>");
     // strcpy(http_task->client->send_buf, "fuck you");
-    int n = cl_socket_write(http_task->client);
+    cl_socket_write(http_task->client, buf, sizeof(buf));
     // sleep(5);
     // if(n > 0)
     //     cl_event_add_event(http_task->event, &(http_task->event_node));
     // else
     //     close(http_task->event_node.fd);
-    close(http_task->event_node.fd);
-    munmap(http_task->client->recv_buf, http_task->client->buffersize);
-    munmap(http_task->client->send_buf, http_task->client->buffersize);
+    // close(http_task->event_node.fd);
+    // munmap(http_task->client->recv_buf, http_task->client->buffersize);
+    // munmap(http_task->client->send_buf, http_task->client->buffersize);
 
-    // cl_socket_destroy(http_task->client);
+    cl_socket_destroy(http_task->client);
     // http_task->client = NULL;
     return NULL;
 }
@@ -79,11 +81,12 @@ void* response(void* arg)
 void* destroy(void* arg)
 {
     cl_http_event* http_task = arg;
-    cl_base_task* base_task = ((cl_base_task*)(http_task->event_node.task));
+    // cl_base_task* base_task = ((cl_base_task*)(http_task->event_node.task));
     // if(base_task->need_destroy == NEEDDIE && http_task)
     // {
-    //     cl_socket_destroy(http_task->client);
-    //     http_task->client = NULL;
+    if(http_task->client)
+        cl_socket_destroy(http_task->client);
+    http_task->client = NULL;
     //     http_task->event_node.fd = -1;
     // }
     // http_task->event->

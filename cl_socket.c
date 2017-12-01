@@ -14,7 +14,7 @@ cl_socket* cl_socket_create(const char* ip, const char* port)
         return NULL;
     }
     bzero(newsock, sizeof(newsock));
-    newsock->buffersize = 10240;
+    // newsock->buffersize = 10240;
     if(NULL == ip && NULL == port){
         newsock->addr.sin_family = AF_INET;
         newsock->len = sizeof(newsock->addr);
@@ -32,12 +32,12 @@ cl_socket* cl_socket_create(const char* ip, const char* port)
             free(newsock);
             return NULL;
         }
-        int mmapfd = open("/dev/zero",O_CREAT|O_RDWR,0644);
-        newsock->recv_buf = mmap(0, newsock->buffersize,PROT_READ|PROT_WRITE, MAP_SHARED, mmapfd, 0);
-        close(mmapfd);
-        mmapfd = open("/dev/zero",O_CREAT|O_RDWR,0644);
-        newsock->send_buf = mmap(0, newsock->buffersize,PROT_READ|PROT_WRITE, MAP_SHARED, mmapfd, 0);
-        close(mmapfd);
+        // int mmapfd = open("/dev/zero",O_CREAT|O_RDWR,0644);
+        // newsock->recv_buf = mmap(0, newsock->buffersize,PROT_READ|PROT_WRITE, MAP_SHARED, mmapfd, 0);
+        // close(mmapfd);
+        // mmapfd = open("/dev/zero",O_CREAT|O_RDWR,0644);
+        // newsock->send_buf = mmap(0, newsock->buffersize,PROT_READ|PROT_WRITE, MAP_SHARED, mmapfd, 0);
+        // close(mmapfd);
         newsock->addr.sin_family = AF_INET;
         newsock->addr.sin_port = htons(atoi(port));
         newsock->addr.sin_addr =  *((struct in_addr*)host->h_addr);
@@ -87,12 +87,12 @@ cl_socket* cl_socket_accept(cl_socket* server)
         free(client);
         return NULL;
     }
-    int mmapfd = open("/dev/zero",O_CREAT|O_RDWR,0644);
-    client->recv_buf = mmap(0, client->buffersize,PROT_READ|PROT_WRITE, MAP_SHARED, mmapfd, 0);
-    close(mmapfd);
-    mmapfd = open("/dev/zero",O_CREAT|O_RDWR,0644);
-    client->send_buf = mmap(0, client->buffersize,PROT_READ|PROT_WRITE, MAP_SHARED, mmapfd, 0);
-    close(mmapfd);
+    // int mmapfd = open("/dev/zero",O_CREAT|O_RDWR,0644);
+    // client->recv_buf = mmap(0, client->buffersize,PROT_READ|PROT_WRITE, MAP_SHARED, mmapfd, 0);
+    // close(mmapfd);
+    // mmapfd = open("/dev/zero",O_CREAT|O_RDWR,0644);
+    // client->send_buf = mmap(0, client->buffersize,PROT_READ|PROT_WRITE, MAP_SHARED, mmapfd, 0);
+    // close(mmapfd);
     return client;
 }
 
@@ -135,22 +135,21 @@ int cl_socket_bind(cl_socket* server)
  * @param  cl_sockets 要读取的socket
  * @return        read返回值
  */
-int cl_socket_read(cl_socket* cl_sockets)
-{
-    int n;
-    bzero(cl_sockets->recv_buf, cl_sockets->buffersize);
-    do{
-        n = read(cl_sockets->fd, cl_sockets->recv_buf, cl_sockets->buffersize);
-        if(n < 0 && errno == EINTR)
-        {
-            continue;
-        }else{
-            cl_sockets->recv_buf[n] = '\0';
-            break;
-        }
-    }while(1);
-    return n;
-}
+ int cl_socket_read(cl_socket* cl_sockets, char* buf, size_t len)
+ {
+     int n=-1;
+     bzero(buf, len);
+     do{
+         n = read(cl_sockets->fd, buf, len);
+         if(errno == EINTR)
+         {
+             continue;
+         }else{
+             break;
+         }
+     }while(1);
+     return n;
+ }
 
 
 /**
@@ -158,11 +157,11 @@ int cl_socket_read(cl_socket* cl_sockets)
  * @param  cl_sockets 要发送的数据
  * @return        发情况
  */
-int cl_socket_write(cl_socket* cl_sockets)
-{
-    int n = write(cl_sockets->fd, cl_sockets->send_buf, strlen(cl_sockets->send_buf));
-    return n;
-}
+ int cl_socket_write(cl_socket* cl_sockets, const char* buf, size_t len)
+ {
+     int n = write(cl_sockets->fd, buf, len);
+     return n;
+ }
 
 
 void cl_socket_destroy(cl_socket* cl_sockets)
@@ -171,8 +170,8 @@ void cl_socket_destroy(cl_socket* cl_sockets)
     // {
     close(cl_sockets->fd);
     // }
-    munmap(cl_sockets->recv_buf, cl_sockets->buffersize);
-    munmap(cl_sockets->send_buf, cl_sockets->buffersize);
-    printf("delete socket\n");
+    // munmap(cl_sockets->recv_buf, cl_sockets->buffersize);
+    // munmap(cl_sockets->send_buf, cl_sockets->buffersize);
+    // printf("delete socket\n");
     free(cl_sockets);
 }

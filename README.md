@@ -17,7 +17,7 @@
 
 ### ab性能测试：
 
-    codelover@codelover ~$ ab -n 10000 -c 1000 http://127.0.0.1:7777/index.html
+    codelover@codelover ~$ ab -c 1000 -n 10000 http://127.0.0.1:7777/index.html
     This is ApacheBench, Version 2.3 <$Revision: 1796539 $>
     Copyright 1996 Adam Twiss, Zeus Technology Ltd, http://www.zeustech.net/
     Licensed to The Apache Software Foundation, http://www.apache.org/
@@ -41,36 +41,37 @@
     Server Port:            7777
 
     Document Path:          /index.html
-    Document Length:        30 bytes
+    Document Length:        916 bytes
 
     Concurrency Level:      1000
-    Time taken for tests:   0.866 seconds
+    Time taken for tests:   1.276 seconds
     Complete requests:      10000
     Failed requests:        0
-    Total transferred:      1380000 bytes
-    HTML transferred:       300000 bytes
-    Requests per second:    11552.31 [#/sec] (mean)
-    Time per request:       86.563 [ms] (mean)
-    Time per request:       0.087 [ms] (mean, across all concurrent requests)
-    Transfer rate:          1556.85 [Kbytes/sec] received
+    Total transferred:      10240000 bytes
+    HTML transferred:       9160000 bytes
+    Requests per second:    7837.11 [#/sec] (mean)
+    Time per request:       127.598 [ms] (mean)
+    Time per request:       0.128 [ms] (mean, across all concurrent requests)
+    Transfer rate:          7837.11 [Kbytes/sec] received
 
     Connection Times (ms)
-              min  mean[+/-sd] median   max
-    Connect:        0    1   2.4      0      21
-    Processing:     0    2   7.3      0     208
-    Waiting:        0    2   7.2      0     208
-    Total:          0    3   8.6      1     225
+                  min  mean[+/-sd] median   max
+    Connect:       12   49  70.0     41    1053
+    Processing:    11   47  15.9     44     236
+    Waiting:        7   27  15.3     22     226
+    Total:         55   96  70.9     87    1097
 
     Percentage of the requests served within a certain time (ms)
-    50%      1
-    66%      1
-    75%      1
-    80%      1
-    90%      4
-    95%     12
-    98%     23
-    99%     50
-    100%    225 (longest request)
+      50%     87
+      66%     96
+      75%    101
+      80%    108
+      90%    118
+      95%    148
+      98%    160
+      99%    162
+     100%   1097 (longest request)
+
 
 ### 目前情况：
     目前还没实现http协议，用ab工具测试了下并发情况如上
