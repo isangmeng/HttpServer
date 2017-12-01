@@ -63,7 +63,7 @@ void* response(void* arg)
     char buf[1024];
     sprintf(buf, "HTTP/1.0 200 OK\r\nServer: Codelover\r\nConnection: Close\r\nDate:Mon,6Oct2003 13:23:42 GMT\r\nContent-Length:30\r\n\r\n<h1>codelover http server</h1>");
     // strcpy(http_task->client->send_buf, "fuck you");
-    cl_socket_write(http_task->client, buf, sizeof(buf));
+    cl_socket_write(http_task->client, buf, strlen(buf));
     // sleep(5);
     // if(n > 0)
     //     cl_event_add_event(http_task->event, &(http_task->event_node));
