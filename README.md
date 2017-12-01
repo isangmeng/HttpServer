@@ -17,23 +17,23 @@
 
 ### ab性能测试：
 
-    codelover@codelover ~$ ab -c 1000 -n 10000 http://127.0.0.1:7777/index.html
+    codelover@codelover ~$ ab -c 1000 -n 1000000 http://127.0.0.1:7777/index.html
     This is ApacheBench, Version 2.3 <$Revision: 1796539 $>
     Copyright 1996 Adam Twiss, Zeus Technology Ltd, http://www.zeustech.net/
     Licensed to The Apache Software Foundation, http://www.apache.org/
 
     Benchmarking 127.0.0.1 (be patient)
-    Completed 1000 requests
-    Completed 2000 requests
-    Completed 3000 requests
-    Completed 4000 requests
-    Completed 5000 requests
-    Completed 6000 requests
-    Completed 7000 requests
-    Completed 8000 requests
-    Completed 9000 requests
-    Completed 10000 requests
-    Finished 10000 requests
+    Completed 100000 requests
+    Completed 200000 requests
+    Completed 300000 requests
+    Completed 400000 requests
+    Completed 500000 requests
+    Completed 600000 requests
+    Completed 700000 requests
+    Completed 800000 requests
+    Completed 900000 requests
+    Completed 1000000 requests
+    Finished 1000000 requests
 
 
     Server Software:        Codelover
@@ -41,36 +41,37 @@
     Server Port:            7777
 
     Document Path:          /index.html
-    Document Length:        916 bytes
+    Document Length:        30 bytes
 
     Concurrency Level:      1000
-    Time taken for tests:   1.276 seconds
-    Complete requests:      10000
+    Time taken for tests:   108.860 seconds
+    Complete requests:      1000000
     Failed requests:        0
-    Total transferred:      10240000 bytes
-    HTML transferred:       9160000 bytes
-    Requests per second:    7837.11 [#/sec] (mean)
-    Time per request:       127.598 [ms] (mean)
-    Time per request:       0.128 [ms] (mean, across all concurrent requests)
-    Transfer rate:          7837.11 [Kbytes/sec] received
+    Total transferred:      138000000 bytes
+    HTML transferred:       30000000 bytes
+    Requests per second:    9186.13 [#/sec] (mean)
+    Time per request:       108.860 [ms] (mean)
+    Time per request:       0.109 [ms] (mean, across all concurrent requests)
+    Transfer rate:          1237.97 [Kbytes/sec] received
 
     Connection Times (ms)
                   min  mean[+/-sd] median   max
-    Connect:       12   49  70.0     41    1053
-    Processing:    11   47  15.9     44     236
-    Waiting:        7   27  15.3     22     226
-    Total:         55   96  70.9     87    1097
+    Connect:        0   67 186.8     36    7175
+    Processing:     0   41  19.1     40    1026
+    Waiting:        0   29  17.7     27    1018
+    Total:          0  108 189.9     77    7204
 
     Percentage of the requests served within a certain time (ms)
-      50%     87
-      66%     96
-      75%    101
-      80%    108
-      90%    118
-      95%    148
-      98%    160
-      99%    162
-     100%   1097 (longest request)
+      50%     77
+      66%     85
+      75%     91
+      80%     95
+      90%    107
+      95%    120
+      98%   1083
+      99%   1104
+     100%   7204 (longest request)
+
 
 
 ### 目前情况：
