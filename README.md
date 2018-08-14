@@ -1,5 +1,5 @@
 # HttpServer
-<p>此版本为<a href="https://github.com/lovercode/WebServer.git">WebServer</a>的改进版，之前的WebServer写的太挫了（虽然这个也很挫）</p>
+<p>此版本为<a href="https://github.com/lovercode/WebServer.git">WebServer</a>的改进版</p>
 
 ### 基本思路
 <img src="img/server.png">
